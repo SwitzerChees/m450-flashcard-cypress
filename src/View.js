@@ -15,8 +15,7 @@ import {
 } from "./Update";
 
 const { div, a, button, span, textarea } = hh(h);
-const btnStyle =
-  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
+const btnStyle = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
 
 function gradeButtons(dispatch, card) {
   const { showAnswer } = card;
@@ -50,15 +49,11 @@ function gradeButtons(dispatch, card) {
 function question(dispatch, card) {
   return div({ className: "flex flex-col" }, [
     div({ className: "flex justify-between" }, [
-      button(
-        {
-          onclick: () => dispatch(editCardMsg(card.id)),
-        },
-        "✏️"
-      ),
+      button({ name: "editCard", onclick: () => dispatch(editCardMsg(card.id)) }, "✏️"),
       span({ className: "font-bold" }, "Question"),
       button(
         {
+          name: "deleteCard",
           onclick: () => dispatch(deleteCardMsg(card.id)),
         },
         "❌"
@@ -77,6 +72,7 @@ function editQuestion(dispatch, card) {
   return div({ className: "" }, [
     div({ className: "font-bold" }, "Question"),
     textarea({
+      name: "question",
       className: "resize-none	w-full p-2 my-2",
       value: card.question,
       rows: 5,
@@ -92,6 +88,7 @@ function answer(dispatch, card) {
     : div(
         a(
           {
+            name: "showAnswer",
             className: "cursor-pointer",
             onclick: () => dispatch(showAnswerMsg(card.id)),
           },
@@ -104,6 +101,7 @@ function editAnswer(dispatch, card) {
   return div({ className: "" }, [
     div({ className: "font-bold" }, "Answer"),
     textarea({
+      name: "answer",
       className: "resize-none	w-full p-2 my-2",
       value: card.answer,
       rows: 5,
@@ -119,11 +117,7 @@ function viewCard(dispatch, card) {
       {
         className: "p-4",
       },
-      [
-        question(dispatch, card),
-        answer(dispatch, card),
-        gradeButtons(dispatch, card),
-      ]
+      [question(dispatch, card), answer(dispatch, card), gradeButtons(dispatch, card)]
     )
   );
 }
@@ -136,6 +130,7 @@ function editCard(dispatch, card) {
       editAnswer(dispatch, card),
       button(
         {
+          name: "cardSave",
           className: btnStyle,
           onclick: () => dispatch(saveMsg(card.id)),
         },
@@ -156,13 +151,14 @@ function view(dispatch, model) {
     div(
       button(
         {
+          name: "addCard",
           className: btnStyle,
           onclick: () => dispatch(newCardMsg),
         },
         "➕ Add Flashcard"
       )
     ),
-    div({ className: "grid grid-cols-3 gap-4" }, cards),
+    div({ id: "cardsContainer", className: "grid grid-cols-3 gap-4" }, cards),
   ]);
 }
 
